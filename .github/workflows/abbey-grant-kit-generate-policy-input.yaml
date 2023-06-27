@@ -23,6 +23,8 @@ jobs:
         env:
           TF_HTTP_USERNAME: starter-kit
           TF_HTTP_PASSWORD: ${{ secrets.ABBEY_TOKEN }}
+          TF_VAR_tailscale_api_key: ${{ secrets.TAILSCALE_API_KEY }}
+          TF_VAR_tailnet: ${{ secrets.TAILNET }}
 
       - name: Terraform Plan
         id: plan
@@ -30,6 +32,8 @@ jobs:
         env:
           TF_HTTP_USERNAME: starter-kit
           TF_HTTP_PASSWORD: ${{ secrets.ABBEY_TOKEN }}
+          TF_VAR_tailscale_api_key: ${{ secrets.TAILSCALE_API_KEY }}
+          TF_VAR_tailnet: ${{ secrets.TAILNET }}
 
       - name: Terraform Show
         id: show
