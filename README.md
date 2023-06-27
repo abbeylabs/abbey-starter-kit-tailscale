@@ -1,12 +1,12 @@
 # Abbey Starter Kit GitHub
 
 This example shows how to create a Grant Kit.
-The example features requesting access to a [GitHub Team Membership](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/team_membership)
-from multiple reviewers, requiring only `one_of` the reviewers to approve the access and has an expiration of 24 hours.
+The example features requesting access to a [Tailscale ACL](https://registry.terraform.io/providers/tailscale/tailscale/latest/docs/resources/acl)
+from multiple reviewers, requiring only `one_of` the reviewers to approve the access and has an expiration of 1 week.
 
 ## Usage
 
-Visit this [Starter Kit's docs](https://docs.abbey.io/integrations/infrastructure/github) for a short usage walkthrough.
+Visit this [Starter Kit's docs](https://docs.abbey.io/integrations/infrastructure/tailscale) for a short usage walkthrough.
 
 ## :books: Learn More
 

@@ -29,8 +29,8 @@ provider "tailscale" {
   tailnet = var.tailnet
 }
 
-resource "abbey_grant_kit" "engineering_pii_github_team" {
-  name = "GitHub Team: Engineering PII"
+resource "abbey_grant_kit" "tailscale_acl" {
+  name = "Tailscale ACL"
   description = <<-EOT
     This resource represents a Tailscale ACL to access your Tailscale Network.
 
