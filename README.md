@@ -1,4 +1,4 @@
-# Abbey Starter Kit GitHub
+# Abbey Starter Kit Tailscale
 
 This example shows how to create a Grant Kit.
 The example features requesting access to a [Tailscale ACL](https://registry.terraform.io/providers/tailscale/tailscale/latest/docs/resources/acl)
