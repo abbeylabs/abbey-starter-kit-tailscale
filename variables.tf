@@ -1,3 +1,9 @@
+variable "abbey_token" {
+  type = string
+  sensitive = true
+  description = "Abbey API Token"
+}
+
 variable "tailscale_api_key" {
   type = string
   sensitive = "true"
