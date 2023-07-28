@@ -10,7 +10,7 @@ terraform {
   required_providers {
     abbey = {
       source = "abbeylabs/abbey"
-      version = "0.2.2"
+      version = "0.2.4"
     }
 
     tailscale = {
@@ -49,21 +49,9 @@ resource "abbey_grant_kit" "tailscale_acl" {
     ]
   }
 
-  policies = {
-    grant_if = [
-      {
-        # Optionally, you can build an OPA bundle and keep it in your repo.
-        # `opa build -b policies/common -o policies/common.tar.gz`
-        #
-        # If you do, you can then specify `bundle` with:
-        # bundle = "github://organization/repo/policies/common.tar.gz"
-        #
-        # Otherwise you can specify the directory. Abbey will build an
-        # OPA bundle for you and recursively add all your policies.
-        bundle = "github://organization/repo/policies"
-      }
-    ]
-  }
+  policies = [
+    { bundle = "github://organization/repo/policies" }
+  ]
 
   output = {
     # Replace with your own path pointing to where you want your access changes to manifest.
@@ -75,7 +63,7 @@ resource "abbey_grant_kit" "tailscale_acl" {
           acls : [
             {
               action = "accept",
-              src  = ["{{ .data.system.abbey.secondary_identities.tailscale.user }}"],
+              src  = ["{{ .data.system.abbey.identities.tailscale.user }}"],
               dst  = ["*:*"],
           }],
         })
@@ -85,20 +73,11 @@ resource "abbey_grant_kit" "tailscale_acl" {
 }
 
 resource "abbey_identity" "user_1" {
-  name = "replace-me"
-
-  linked = jsonencode({
-    abbey = [
-      {
-        type  = "AuthId"
-        value = "replace-me@example.com"
-      }
-    ]
-
-    tailscale = [
-      {
-        user = "replace-me@example.com"
-      }
-    ]
-  })
+  abbey_account = "replace-me@example.com"
+  source = "tailscale"
+  metadata = jsonencode(
+    {
+      user = "replace-me@example.com"
+    }
+  )
 }
