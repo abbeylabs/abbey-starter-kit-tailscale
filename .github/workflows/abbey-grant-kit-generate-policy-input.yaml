@@ -34,16 +34,3 @@ jobs:
           TF_HTTP_PASSWORD: ${{ secrets.ABBEY_TOKEN }}
           TF_VAR_tailscale_api_key: ${{ secrets.TAILSCALE_API_KEY }}
           TF_VAR_tailnet: ${{ secrets.TAILNET }}
-
-      - name: Terraform Show
-        id: show
-        run: echo "content=$(terraform show -no-color -json tfplan | jq '.variables.password |= "***" | tostring')" >> $GITHUB_OUTPUT
-
-      - name: Create comment
-        uses: peter-evans/create-or-update-comment@v2
-        with:
-          issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            ```json
-            ${{ fromJson(steps.show.outputs.content) }}
-            ```
