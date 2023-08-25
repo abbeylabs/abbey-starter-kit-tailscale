@@ -13,7 +13,7 @@ jobs:
 
       - name: Setup Terraform
         id: setup
-        uses: hashicorp/setup-terraform@v1
+        uses: hashicorp/setup-terraform@v2
         with:
           terraform_wrapper: false
 
@@ -21,7 +21,7 @@ jobs:
         id: init
         run: terraform init
         env:
-          TF_HTTP_USERNAME: starter-kit
+          TF_HTTP_USERNAME: starter-kit-tailscale
           TF_HTTP_PASSWORD: ${{ secrets.ABBEY_TOKEN }}
           TF_VAR_tailscale_api_key: ${{ secrets.TAILSCALE_API_KEY }}
           TF_VAR_tailnet: ${{ secrets.TAILNET }}
@@ -30,7 +30,7 @@ jobs:
         id: plan
         run: terraform plan -no-color -input=false -out=tfplan
         env:
-          TF_HTTP_USERNAME: starter-kit
+          TF_HTTP_USERNAME: starter-kit-tailscale
           TF_HTTP_PASSWORD: ${{ secrets.ABBEY_TOKEN }}
           TF_VAR_tailscale_api_key: ${{ secrets.TAILSCALE_API_KEY }}
           TF_VAR_tailnet: ${{ secrets.TAILNET }}
