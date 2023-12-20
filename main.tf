@@ -1,33 +1,9 @@
-terraform {
-  backend "http" {
-    address        = "https://api.abbey.io/terraform-http-backend"
-    lock_address   = "https://api.abbey.io/terraform-http-backend/lock"
-    unlock_address = "https://api.abbey.io/terraform-http-backend/unlock"
-    lock_method    = "POST"
-    unlock_method  = "POST"
-  }
+locals {
+  account_name = ""
+  repo_name = ""
 
-  required_providers {
-    abbey = {
-      source = "abbeylabs/abbey"
-      version = "0.2.4"
-    }
-
-    tailscale = {
-      source  = "tailscale/tailscale"
-      version = "0.13.7"
-    }
-  }
-}
-
-provider "abbey" {
-  # Configuration options
-  bearer_auth = var.abbey_token
-}
-
-provider "tailscale" {
-  api_key = var.tailscale_api_key
-  tailnet = var.tailnet
+  project_path = "github://${local.account_name}/${local.repo_name}"
+  policies_path = "${local.project_path}/policies"
 }
 
 resource "abbey_grant_kit" "tailscale_acl" {
@@ -50,34 +26,22 @@ resource "abbey_grant_kit" "tailscale_acl" {
   }
 
   policies = [
-    { bundle = "github://organization/repo/policies" }
+    { bundle = local.policies_path }
   ]
 
   output = {
-    # Replace with your own path pointing to where you want your access changes to manifest.
-    # Path is an RFC 3986 URI, such as `github://{organization}/{repo}/path/to/file.tf`.
-    location = "github://organization/repo/access.tf"
+    location = "${local.project_path}/access.tf"
     append = <<-EOT
       resource "tailscale_acl" "sample_acl" {
         acl = jsonencode({
           acls : [
             {
               action = "accept",
-              src  = ["{{ .data.system.abbey.identities.tailscale.user }}"],
+              src  = ["{{ .user.email }}"],
               dst  = ["*:*"],
           }],
         })
       }
     EOT
   }
-}
-
-resource "abbey_identity" "user_1" {
-  abbey_account = "replace-me@example.com"
-  source = "tailscale"
-  metadata = jsonencode(
-    {
-      user = "replace-me@example.com"
-    }
-  )
 }
